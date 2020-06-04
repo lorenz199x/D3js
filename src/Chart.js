@@ -1,40 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { select } from 'd3'
+import { select, line, curveCardinal } from 'd3'
 
-// const data = [25, 30, 45, 60, 20]
 function Chart() {
-  const [ data, setData ] = useState([25, 30, 45, 60, 20])
+  const [ data, setData ] = useState([25, 30, 45, 60, 20, 65, 70])
   const svgRef = useRef()
 
   useEffect(() => {
     const svg = select(svgRef.current)
-    svg
-      .selectAll('circle')
-      .data(data)
-      .join('circle')
-      .attr('r', value => value)
-      .attr('cx', value => value * 3)
-      .attr('cy', value => value * 2)
-      .attr('stroke', 'red')
+    const myLine = line()
+      .x((value, index) => index * 50)
+      .y(value => 150 - value)
+      .curve(curveCardinal) // to add shape on curve
 
-    //another way of displaying svg circles using callback
-    /** .join(
-      enter => enter
-        .append('circle')
-        .attr('r', value => value)
-        .attr('cx', value => value * 3)
-        .attr('cy', value => value * 2)
-        .attr('stroke', 'red'),
-      update => update.attr('class', 'updated'),
-      exit => exit.remove()
-    );
-    */
+      svg.selectAll('path')
+      .data([data])
+      .join('path')
+      .attr('d', value => myLine(value))
+      .attr('fill', 'none')
+      .attr('stroke', 'blue')
   }, [data])
 
   return (
     <React.Fragment>
       <div> Chart </div>
-      <svg ref={svgRef}></svg>
+      <svg style={{ backgroundColor: 'white'}} ref={svgRef}></svg>
+      <br />
       <button onClick={() => setData(data.map(value => value + 8))}>
         update data
       </button>
