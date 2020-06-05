@@ -22,7 +22,7 @@ function Chart() {
       .tickFormat(index => index + 1);
     svg
       .select('.x-axis')
-      .style('transform', 'tranlateY(50, 150)')
+      .style('transform', 'translateY(150px)')
       .call(xAxis)
 
     const yAxis = axisRight(yScale);
@@ -59,17 +59,14 @@ function Chart() {
         <g className="y-axis" />
       </svg>
       <br />
-      <button onClick={() => setData(data.map(value => value + 8))}>
-        update data
+      <button onClick={() => setData(data.map(value => value + 5))}>
+        Update data
       </button>
-      <button onClick={() => setData(data.map(value => value < 35))}>
-        filter data
+      <button onClick={() => setData(data.filter(value => value < 35))}>
+        Filter data
       </button>
     </React.Fragment>
-
   );
 }
 
 export default Chart;
-
-
